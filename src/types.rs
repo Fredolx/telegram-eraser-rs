@@ -2,15 +2,16 @@ use grammers_client::{
     Client,
     client::{LoginToken, PasswordToken},
     sender::SenderPoolFatHandle,
-    session::{storages::SqliteSession, types::PeerRef},
+    session::types::PeerRef,
 };
+use grammers_session::storages::SqliteSession;
 use ratatui::widgets::ListState;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use tokio::{sync::mpsc::UnboundedSender, task::JoinHandle};
 use tui_input::Input;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct Config {
     pub api_id: i32,
     pub api_hash: String,
@@ -25,7 +26,7 @@ pub struct Telegram {
     pub api_hash: String,
 }
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy)]
 pub enum ChatKind {
     User,
     Bot,
@@ -35,7 +36,6 @@ pub enum ChatKind {
     Community,
 }
 
-#[derive(Clone)]
 pub struct Chat {
     pub peer: PeerRef,
     pub name: String,

@@ -25,7 +25,7 @@ pub async fn scan(telegram: Telegram, tx: UnboundedSender<AppEvent>) -> Result<(
     Ok(())
 }
 
-pub async fn count_own_messages(telegram: &Telegram, peer: PeerRef) -> Result<usize> {
+async fn count_own_messages(telegram: &Telegram, peer: PeerRef) -> Result<usize> {
     telegram
         .client
         .search_messages(peer)

@@ -23,24 +23,50 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            name: linux
+            target: x86_64-unknown-linux-gnu
+            binary: telegram-eraser
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
             binary: telegram-eraser
           - os: windows-latest
-            name: windows
+            target: x86_64-pc-windows-msvc
             binary: telegram-eraser.exe
-          - os: macos-latest
-            name: macos
-            binary: telegram-eraser
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            binary: telegram-eraser.exe
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions-rust-lang/setup-rust-toolchain@v2
-      - run: cargo build --release --locked
+        with:
+          target: ${{ matrix.target }}
+      - run: cargo build --release --locked --target ${{ matrix.target }}
       - uses: vimtor/action-zip@v1.3
         with:
-          files: target/release/${{ matrix.binary }} LICENSE
-          dest: telegram-eraser-${{ matrix.name }}.zip
+          files: target/${{ matrix.target }}/release/${{ matrix.binary }} LICENSE
+          dest: telegram-eraser-${{ matrix.target }}.zip
       - uses: actions/upload-artifact@v7
         with:
-          name: telegram-eraser-${{ matrix.name }}
-          path: telegram-eraser-${{ matrix.name }}.zip
+          name: telegram-eraser-${{ matrix.target }}
+          path: telegram-eraser-${{ matrix.target }}.zip
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          target: aarch64-apple-darwin,x86_64-apple-darwin
+      - run: cargo build --release --locked --target aarch64-apple-darwin --target x86_64-apple-darwin
+      - run: >
+          lipo -create -output telegram-eraser
+          target/aarch64-apple-darwin/release/telegram-eraser
+          target/x86_64-apple-darwin/release/telegram-eraser
+      - uses: vimtor/action-zip@v1.3
+        with:
+          files: telegram-eraser LICENSE
+          dest: telegram-eraser-universal-apple-darwin.zip
+      - uses: actions/upload-artifact@v7
+        with:
+          name: telegram-eraser-universal-apple-darwin
+          path: telegram-eraser-universal-apple-darwin.zip

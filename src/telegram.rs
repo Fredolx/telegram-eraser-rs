@@ -5,8 +5,8 @@ use anyhow::{Context, Result};
 use grammers_client::{
     Client, SenderPool,
     sender::{AutoSleep, ConnectionParams},
-    session::storages::SqliteSession,
 };
+use grammers_session::storages::SqliteSession;
 use std::{num::NonZeroU32, path::PathBuf, sync::Arc, time::Duration};
 
 const SESSION_NAME: &str = "session.sqlite";
