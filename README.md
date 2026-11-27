@@ -20,4 +20,4 @@ cargo install --git https://github.com/Fredolx/telegram-eraser-rs --locked
 
 ## Manual download
 
-Download the zip for your platform from the [latest release](https://github.com/Fredolx/telegram-eraser-rs/releases/latest), extract it and put `telegram-eraser` somewhere in your `PATH`.
+Download the zip for your platform from the [latest release](https://github.com/Fredolx/telegram-eraser-rs/releases/latest)
