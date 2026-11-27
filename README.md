@@ -12,8 +12,6 @@ With [cargo-binstall](https://github.com/cargo-bins/cargo-binstall):
 cargo binstall --git https://github.com/Fredolx/telegram-eraser-rs telegram-eraser
 ```
 
-Prebuilt binaries are available for Linux, macOS and Windows. On other platforms, cargo-binstall builds from source instead.
-
 ## From source
 
 ```sh
