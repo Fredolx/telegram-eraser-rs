@@ -16,8 +16,6 @@ Prebuilt binaries are available for Linux, macOS and Windows. On other platforms
 
 ## From source
 
-Requires the [Rust toolchain](https://rustup.rs):
-
 ```sh
 cargo install --git https://github.com/Fredolx/telegram-eraser-rs --locked
 ```
