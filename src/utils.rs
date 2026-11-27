@@ -10,17 +10,16 @@ pub fn get_project_dirs() -> Result<ProjectDirs> {
 pub fn create_private_dir(path: &Path) -> Result<()> {
     std::fs::create_dir_all(path)
         .with_context(|| loc::err_create_dir(&path.display().to_string()))?;
-    restrict_to_owner(path)
+    restrict_to_owner(path).with_context(|| loc::err_permissions(&path.display().to_string()))
 }
 
 #[cfg(unix)]
-fn restrict_to_owner(path: &Path) -> Result<()> {
+fn restrict_to_owner(path: &Path) -> std::io::Result<()> {
     use std::os::unix::fs::PermissionsExt;
     std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o700))
-        .with_context(|| loc::err_permissions(&path.display().to_string()))
 }
 
 #[cfg(not(unix))]
-fn restrict_to_owner(_: &Path) -> Result<()> {
+fn restrict_to_owner(_: &Path) -> std::io::Result<()> {
     Ok(())
 }
